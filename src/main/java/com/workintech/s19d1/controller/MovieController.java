@@ -1,5 +1,7 @@
 package com.workintech.s19d1.controller;
 
+import com.workintech.s19d1.dto.MovieRequest;
+import com.workintech.s19d1.entity.Actor;
 import com.workintech.s19d1.entity.Movie;
 import com.workintech.s19d1.service.MovieService;
 import lombok.AllArgsConstructor;
@@ -23,7 +25,12 @@ public class MovieController {
         return movieService.findById(id);
     }
     @PostMapping
-    public Movie save(@RequestBody Movie movie){
+    public Movie save(@RequestBody MovieRequest movieRequest){
+        Movie movie=movieRequest.getMovie();
+        List<Actor> actors=movieRequest.getActor();
+        for(Actor actor:actors){
+            movie.addActor(actor);
+        }
         return movieService.save(movie);
     }
     @PutMapping("/{id}")

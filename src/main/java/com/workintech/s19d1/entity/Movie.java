@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,7 +19,7 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private long id;
+    private Long id;
 
     @Column(name="name")
     private String name;
@@ -28,9 +31,13 @@ public class Movie {
     private double rating;
 
     @Column(name="release_date")
-    private String releaseDate;
+    private LocalDate releaseDate;
 
     @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name="actor",schema = "public",joinColumns = @JoinColumn(name = "movie_id"),inverseJoinColumns = @JoinColumn(name="actor_id"))
-    private List<Actor> actors;
+    private List<Actor> actors=new ArrayList<>();
+
+    public void addActor(Actor actor){
+        actors.add(actor);
+    }
 }
